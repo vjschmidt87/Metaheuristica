@@ -4,6 +4,8 @@
     <groupId>br.com.vinicius.mestrado</groupId>
     <artifactId>Metaheuristica</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>Dynamic Status Distribution Optimization (DySDO)</name>
+  	<description>An optimization algorithm based on a dynamic social status distribution</description>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
