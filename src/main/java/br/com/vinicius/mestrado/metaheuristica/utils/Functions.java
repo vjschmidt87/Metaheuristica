@@ -2,26 +2,23 @@ package br.com.vinicius.mestrado.metaheuristica.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Functions {
 
     public static Map<String, Method> methodMap = new HashMap<>();
     public static String[] varsName;
-    public static List<Double> foConstants;
     private static boolean first = true;
     
     public static void functionsStarter() {
         try {
-            methodMap.put("rosenbrock", Functions.class.getMethod("rosenbrock", new Class[]{List.class, double[].class}));
-            methodMap.put("rastrigin", Functions.class.getMethod("rastrigin", new Class[]{List.class, double[].class}));
+            methodMap.put("rosenbrock", Functions.class.getMethod("rosenbrock", new Class[]{double[].class}));
+            methodMap.put("rastrigin", Functions.class.getMethod("rastrigin", new Class[]{double[].class}));
             methodMap.put("easom2D", Functions.class.getMethod("easom2D", new Class[]{double[].class}));
             methodMap.put("easom", Functions.class.getMethod("easom", new Class[]{double[].class}));
             methodMap.put("soundWave", Functions.class.getMethod("soundWave", new Class[]{double[].class}));
-            methodMap.put("potentialLJ", Functions.class.getMethod("potentialLJ", new Class[]{List.class, double[].class}));
+            methodMap.put("potentialLJ", Functions.class.getMethod("potentialLJ", new Class[]{double[].class}));
             methodMap.put("sphere", Functions.class.getMethod("sphere", new Class[]{double[].class}));
             methodMap.put("spherePI", Functions.class.getMethod("spherePi", new Class[]{double[].class}));
             methodMap.put("elliptic", Functions.class.getMethod("elliptic", new Class[]{double[].class}));
@@ -30,15 +27,15 @@ public class Functions {
         }
     }
     
-    public static double invoker (String key, List<FoVariable> constants, double[] coords) {
+    public static double invoker (String key, double[] coords) {
         double value = 0;
         try {
             switch (key.toLowerCase()) {
                 case "rosenbrock":
-                    value = (double) methodMap.get("rosenbrock").invoke(null, constants, coords);
+                    value = (double) methodMap.get("rosenbrock").invoke(null, coords);
                     break;
                 case "rastrigin":
-                    value = (double) methodMap.get("rastrigin").invoke(null, constants, coords);
+                    value = (double) methodMap.get("rastrigin").invoke(null, coords);
                     break;
                 case "easom2d":
                     value = (double) methodMap.get("easom2D").invoke(null, coords);
@@ -50,7 +47,7 @@ public class Functions {
                     value = (double) methodMap.get("soundWave").invoke(null, coords);
                     break;
                 case "potentiallj":
-                    value = (double) methodMap.get("potentialLJ").invoke(null, constants, coords);
+                    value = (double) methodMap.get("potentialLJ").invoke(null, coords);
                     break;
                 case "sphere":
                     value = (double) methodMap.get("sphere").invoke(null, coords);
@@ -69,75 +66,39 @@ public class Functions {
         return value;
     }
     
-    public static double rosenbrock(List<FoVariable> constants, double[] coords) {
+    public static double rosenbrock(double[] coords) {
+        double value = 0;
         if (first) {
-            foConstants = new ArrayList<>();
-            Double a = null;
-            Double b = null;
-            for (FoVariable constant : constants) {
-                switch (constant.getName().toLowerCase()) {
-                    case "a":
-                        a = constant.getValue();
-                        break;
-                    case "b":
-                        b = constant.getValue();
-                        break;
-                }
-            }
-            if (a == null) {
-                System.err.println("Constant 'a' not set. Automatic value of 1 set");
-                a = Double.valueOf(1);
-            } 
-            if (b == null) {
-                System.err.println("Constant 'b' not set. Automatic value of 100 set");
-                b = Double.valueOf(100);
-            }
-            foConstants.add(a);
-            foConstants.add(b);
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
             first = false;
         }
-        double value = 0;
         for (int i = 0; i < coords.length - 1; i++) {
-            value += Math.pow(foConstants.get(0) - coords[i], 2) + foConstants.get(1) * Math.pow(coords[i + 1] - Math.pow(coords[i], 2), 2);
+            value += Math.pow(1 - coords[i], 2) + 100 * Math.pow(coords[i + 1] - Math.pow(coords[i], 2), 2);
         }
         return value;
     }
     
-    public static double rastrigin(List<FoVariable> constants, double[] coords) {
+    public static double rastrigin(double[] coords) {
+        double value = 0;
         if (first) {
-            foConstants = new ArrayList<>();
-            Double a = null;
-            for (FoVariable constant : constants) {
-                if ("a".equals(constant.getName().toLowerCase())) {
-                    a = constant.getValue();
-                }
-            }
-            if (a == null) {
-                System.err.println("Constant 'a' not set. Automatic value of 10 set");
-                a = Double.valueOf(10);
-            }
-            foConstants.add(a);
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
             first = false;
         }
-        double value = 0;
         for (int i = 0; i < coords.length; i++) {
-            value += Math.pow(coords[i], 2) - foConstants.get(0) * Math.cos(2 * Math.PI * coords[i]);
+            value += Math.pow(coords[i], 2) - 10 * Math.cos(2 * Math.PI * coords[i]);
         }
-        return foConstants.get(0) * coords.length + value;
+        return 10 * coords.length + value;
     }
     
     public static double easom2D(double[] coords) {
         if (first) {
-            foConstants = new ArrayList<>();
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
@@ -148,8 +109,7 @@ public class Functions {
     
     public static double easom(double[] coords) {
         if (first) {
-            foConstants = new ArrayList<>();
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
@@ -158,7 +118,6 @@ public class Functions {
         double product = 1;
         double sum = 0;
         for (int i = 0; i < coords.length; i++) {
-//            product *= Math.pow(Math.cos(x[i]), 2);
             product *= Math.cos(coords[i]);
         }
         for (int i = 0; i < coords.length; i++) {
@@ -168,63 +127,28 @@ public class Functions {
     }
     
     /*novas funções estão na classe main para serem testadas, converter pra essa estrutura as outras além da ackley*/
-    public static double ackley(List<FoVariable> constants, double[] coords) {
+    public static double ackley(double[] coords) {
+        double sum1 = 0;
+        double sum2 = 0;
         if (first) {
-            foConstants = new ArrayList<>();
-            Double a = null;
-            Double b = null;
-            Double c = null;
-            double d = coords.length;
-            for (FoVariable constant : constants) {
-                switch (constant.getName().toLowerCase()) {
-                    case "a":
-                        a = constant.getValue();
-                        break;
-                    case "b":
-                        b = constant.getValue();
-                        break;
-                    case "c":
-                        c = constant.getValue();
-                        break;
-                }
-            }
-            if (a == null) {
-                System.err.println("Constant 'a' not set. Automatic value of 20 set");
-                a = Double.valueOf(20);
-            }
-            if (b == null) {
-                System.err.println("Constant 'b' not set. Automatic value of 0.2 set");
-                b = Double.valueOf(0.2);
-            }
-            if (c == null) {
-                System.err.println("Constant 'c' not set. Automatic value of 2pi set");
-                c = Double.valueOf(2 * Math.PI);
-            }
-            foConstants.add(a);
-            foConstants.add(b);
-            foConstants.add(c);
-            foConstants.add(d);
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
             first = false;
         }
-        double sum1 = 0;
-        double sum2 = 0;
         for (int i = 0; i < coords.length; i++) {
             sum1 += Math.pow(coords[i], 2);
         }
         for (int i = 0; i < coords.length; i++) {
-            sum2 += Math.cos(foConstants.get(2) * coords[i]);
+            sum2 += Math.cos(2 * Math.PI * coords[i]);
         }
         //arredondamento do java nunca permite alcançar zero absoluto
-        return -foConstants.get(0) * Math.exp(-foConstants.get(1) * Math.sqrt((1/foConstants.get(3)) * sum1)) -Math.exp((1/foConstants.get(3)) * sum2) + foConstants.get(0) + Math.exp(1);
+        return -20 * Math.exp(-0.2 * Math.sqrt((1/coords.length) * sum1)) -Math.exp((1/(2 * Math.PI)) * sum2) + 20 + Math.exp(1);
     }
     
     public static double soundWave(double[] coords) {
         if (first) {
-            foConstants = new ArrayList<>();
             String[] varsNamed = { "a1", "w1", "a2", "w2", "a3", "w3" };
             varsName = varsNamed;
             first = false;
@@ -241,40 +165,11 @@ public class Functions {
         return value;
     }
     
-    public static double potentialLJ (List<FoVariable> constants, double[] coords) {
+    public static double potentialLJ (double[] coords) {
+        int totalAtoms = 0;
         if (first) {
-            foConstants = new ArrayList<>();
-            Double eps = null;
-            Double sigma = null;
-            Double totalAtoms = null;
-            for (FoVariable constant : constants) {
-                switch (constant.getName().toLowerCase()) {
-                    case "eps":
-                        eps = constant.getValue();
-                        break;
-                    case "sigma":
-                        sigma = constant.getValue();
-                        break;
-                }
-            }
-            if (eps == null) {
-                System.err.println("Constant 'eps' not set. Automatic value of 1 set");
-                eps = Double.valueOf(1);
-            }
-            if (sigma == null) {
-                System.err.println("Constant 'sigma' not set. Automatic value of 1 set");
-                sigma = Double.valueOf(1);
-            }
-            if (coords.length > 1 && coords.length % 3 != 0) {
-                System.err.println("Lennard-Jones potential problem works with atoms in a 3d coordinate environment.");
-            } else {
-                totalAtoms = Double.valueOf(Math.round((coords.length) / 3) + 2);
-            }
-            foConstants.add(eps);
-            foConstants.add(sigma);
-            foConstants.add(totalAtoms);
-        
-            varsName = new String [coords.length];
+            totalAtoms = Math.round((coords.length) / 3) + 2;    
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
@@ -283,7 +178,7 @@ public class Functions {
         int indexCoord = 0;
         double rij;
         double sum = 0;
-        double atoms[][] = new double[foConstants.get(2).intValue()][3];
+        double atoms[][] = new double[totalAtoms][3];
         boolean fixed;
         for (int i = 0; i < atoms.length; i++) {
             for (int j = 0; j < 3; j++) {
@@ -314,9 +209,7 @@ public class Functions {
                         break;
                 }
                 if (!fixed) indexCoord++;
-//                System.out.print(atoms[i][j] +"|");
             }
-//            System.out.println("");
         }
         for (int i = 0; i < atoms.length; i++) {
             for (int j = 0; j < i; j++) {
@@ -324,80 +217,16 @@ public class Functions {
                 for (int k = 0; k < 3; k++) {
                     rij += Math.pow(atoms[j][k] - atoms[i][k], 2);
                 }
-                sum += (foConstants.get(1) / Math.pow(rij, 6)) - (foConstants.get(1) / Math.pow(rij, 3));
+                sum += (1/Math.pow(rij, 6)) - (1/Math.pow(rij, 3));
             }
         }
-        //boundaries -10 a 10
-        return 4 * foConstants.get(0) * sum;
+        return 4 * 1 * sum;
     }
-    
-//    public static double potentialLJ (List<FoVariable> constants, double[] coords) {
-//        if (first) {
-//            foConstants = new ArrayList<>();
-//            Double eps = null;
-//            Double sigma = null;
-//            Double totalAtoms = null;
-//            for (FoVariable constant : constants) {
-//                switch (constant.getName().toLowerCase()) {
-//                    case "eps":
-//                        eps = constant.getValue();
-//                        break;
-//                    case "sigma":
-//                        sigma = constant.getValue();
-//                        break;
-//                }
-//            }
-//            if (eps == null) {
-//                System.err.println("Constant 'eps' not set. Automatic value of 1 set");
-//                eps = Double.valueOf(1);
-//            }
-//            if (sigma == null) {
-//                System.err.println("Constant 'sigma' not set. Automatic value of 1 set");
-//                sigma = Double.valueOf(1);
-//            }
-//            if (coords.length > 1 && coords.length % 3 != 0) {
-//                System.err.println("Lennard-Jones potential problem works with atoms in a 3d coordinate environment.");
-//            } else {
-//                totalAtoms = Double.valueOf(Math.round((coords.length) / 3));
-//            }
-//            foConstants.add(eps);
-//            foConstants.add(sigma);
-//            foConstants.add(totalAtoms);
-//        
-//            varsName = new String [coords.length];
-//            for (int i = 0; i < coords.length; i++) {
-//                varsName[i] = "x" + (i + 1);
-//            }
-//            first = false;
-//        }
-//        int indexCoord = 0;
-//        double rij;
-//        double sum = 0;
-//        double atoms[][] = new double[foConstants.get(2).intValue()][3];
-//        for (double[] atom : atoms) {
-//            for (int j = 0; j < 3; j++) {
-//                atom[j] = coords[indexCoord];
-//                indexCoord++;
-//            }
-//        }
-//        for (int i = 0; i < atoms.length; i++) {
-//            for (int j = 0; j < i; j++) {
-//                rij = 0;
-//                for (int k = 0; k < 3; k++) {
-//                    rij += Math.pow(atoms[j][k] - atoms[i][k], 2);
-//                }
-//                sum += (foConstants.get(1) / Math.pow(rij, 6)) - (foConstants.get(1) / Math.pow(rij, 3));
-//            }
-//        }
-//        //boundaries -10 a 10
-//        return 4 * foConstants.get(0) * sum;
-//    }
     
     public static double sphere(double[] coords) {
         double sum = 0;
         if (first) {
-            foConstants = new ArrayList<>();
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
@@ -412,8 +241,7 @@ public class Functions {
     public static double spherePi(double[] coords) {
         double sum = 0;
         if (first) {
-            foConstants = new ArrayList<>();
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }
@@ -429,8 +257,7 @@ public class Functions {
         double sum = 0;
         double p;
         if (first) {
-            foConstants = new ArrayList<>();
-            varsName = new String [coords.length];
+            varsName = new String[coords.length];
             for (int i = 0; i < coords.length; i++) {
                 varsName[i] = "x" + (i + 1);
             }

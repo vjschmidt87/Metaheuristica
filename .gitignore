@@ -1,4 +1,4 @@
-**/result/
+results/
 **/target/
 .project
 .classpath

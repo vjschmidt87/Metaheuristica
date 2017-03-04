@@ -24,7 +24,6 @@ public class Agent implements Comparable<Agent> {
     private int id;
     private int interactStartPosition;
     private double epsilon = 1E-4;
-    private List<FoVariable> constants;
     private double[] coords;
     private double[] bestCoords;
     private double[] bestCoordsCloned;
@@ -284,7 +283,7 @@ public class Agent implements Comparable<Agent> {
         } else if (function != null && Utils.cec15) {
             evaluation = ((testfunc) function).callFunction(coords, totalDim, Utils.functionNumber, shift, rotate);
         } else {
-            evaluation = Functions.invoker(foKey, constants, coords);
+            evaluation = Functions.invoker(foKey, coords);
         }
         testCounter++;
         if (evaluation < Utils.bestFO) {
