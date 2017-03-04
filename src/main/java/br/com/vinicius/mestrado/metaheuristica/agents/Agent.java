@@ -23,7 +23,7 @@ public class Agent implements Comparable<Agent> {
     
     private int id;
     private int interactStartPosition;
-    private double epsilon = 1E-4;
+    private final double epsilon = 1E-4;
     private double[] coords;
     private double[] bestCoords;
     private double[] bestCoordsCloned;
@@ -128,7 +128,6 @@ public class Agent implements Comparable<Agent> {
         return bestCoordsEver;
     }
     
-    //modo estrela
     public double[] getBestCoordsCloned() {
         return bestCoordsCloned;
     }
@@ -181,7 +180,6 @@ public class Agent implements Comparable<Agent> {
         this.bestFOEver = bestFOEver;
     }
     
-    //modo estrela
     public double getBestFOCloned() {
         return bestFOCloned;
     }
@@ -473,7 +471,7 @@ public class Agent implements Comparable<Agent> {
         double dimSize = Math.abs(boundary[0] - boundary[1]);
         double x = coord;
         if (boundary[0] - boundary[1] < Utils.MIN_DOUBLE) {
-                coord = boundary[0];
+            coord = boundary[0];
         } else if (coord > boundary[0]) {
             coord = coord - (Math.ceil(Math.abs((coord-boundary[0])/dimSize)) * dimSize);
         } else if (coord < boundary[1]) {

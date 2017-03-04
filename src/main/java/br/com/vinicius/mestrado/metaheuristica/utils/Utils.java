@@ -1,5 +1,6 @@
 package br.com.vinicius.mestrado.metaheuristica.utils;
 
+import br.com.vinicius.mestrado.metaheuristica.agents.Agent;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -65,14 +66,13 @@ public class Utils {
     }
     
     public static void resetStaticData() {
-//        Agent.testCounter = 0;
-//        Agent.totalNotCalculated = 0;
-//        Agent.zeroCounter = 0;
-//        Agent.foInteractionCounter = 0;
-//        Agent.foExplorationCounter = 0;
-//        Agent.foGotBetterExploring = 0;
-//        Agent.foGotBetterInteracting = 0;
-//        Agent.stagnation = false;
+        Agent.testCounter = 0;
+        Agent.totalNotCalculated = 0;
+        Agent.zeroCounter = 0;
+        Agent.foInteractionCounter = 0;
+        Agent.foExplorationCounter = 0;
+        Agent.foGotBetterExploring = 0;
+        Agent.foGotBetterInteracting = 0;
         checkpoint = 0;
         bestFO = Double.POSITIVE_INFINITY;
         reportData = new double [TOTAL_CHECKPOINTS][2];

@@ -126,7 +126,10 @@ public class Functions {
         return -Math.pow(-1, coords.length) * product * Math.exp(-sum);
     }
     
-    /*novas funções estão na classe main para serem testadas, converter pra essa estrutura as outras além da ackley*/
+    /**
+     * novas funções estão na classe main para serem testadas, 
+     * converter pra essa estrutura as outras além da ackley
+    **/
     public static double ackley(double[] coords) {
         double sum1 = 0;
         double sum2 = 0;
@@ -144,7 +147,8 @@ public class Functions {
             sum2 += Math.cos(2 * Math.PI * coords[i]);
         }
         //arredondamento do java nunca permite alcançar zero absoluto
-        return -20 * Math.exp(-0.2 * Math.sqrt((1/coords.length) * sum1)) -Math.exp((1/(2 * Math.PI)) * sum2) + 20 + Math.exp(1);
+        return -20 * Math.exp(-0.2 * Math.sqrt((1/coords.length) * sum1)) 
+                -Math.exp((1/(2 * Math.PI)) * sum2) + 20 + Math.exp(1);
     }
     
     public static double soundWave(double[] coords) {
@@ -158,8 +162,11 @@ public class Functions {
         double y;
         double y0;
         for (int t = 0; t <= 100; t++) {
-            y = coords[0] * Math.sin(coords[1] * t * theta + coords[2] * Math.sin(coords[3] * t * theta + coords[4] * Math.sin(coords[5] * t * theta)));
-            y0 = 1 * Math.sin(5 * t * theta -1.5 * Math.sin(4.8 * t * theta + 2 * Math.sin(4.9 * t * theta)));
+            y = coords[0] * Math.sin(coords[1] * t * theta + coords[2] 
+                    * Math.sin(coords[3] * t * theta + coords[4] 
+                            * Math.sin(coords[5] * t * theta)));
+            y0 = 1 * Math.sin(5 * t * theta -1.5 
+                    * Math.sin(4.8 * t * theta + 2 * Math.sin(4.9 * t * theta)));
             value += Math.pow(y - y0, 2);
         }
         return value;
