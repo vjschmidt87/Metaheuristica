@@ -14,6 +14,7 @@ public class Utils {
     public static final double OPINION_MAX = 1;
     public static final double OPINION_MIN = 0;
     public static final double[] EPSILONS = { 1E-1, 1E-2, 1E-4, 1E-8, 1E-16 };
+    public static final double EPSILON = 1E-4;
     
     public static final double GOAL_VALUE = Double.NEGATIVE_INFINITY;
     

@@ -10,8 +10,6 @@ import java.util.Arrays;
 
 public class Society {
 
-    private double[][] bestAgents;
-
     private final ReportMaker report = new ReportMaker();
     private double[][] boundaries;
     private int totalAgents;
@@ -32,9 +30,6 @@ public class Society {
 
     private String dir;
 
-    public Society() {
-    }
-
     public Society(int totalAgents, FoData fo, boolean debugMode, float attenuator, float stDev, String dir, boolean userMode) {
         this.userMode = userMode;
         this.attenuator = attenuator;
@@ -52,8 +47,6 @@ public class Society {
         if (debugMode) {
             System.out.println("Size: " + size);
         }
-        bestAgents = new double[boundaries.length][2];
-        resetBestAgents();
     }
 
     public int getTotalAgents() {
@@ -116,13 +109,6 @@ public class Society {
         M = Double.NEGATIVE_INFINITY;
     }
 
-    private void resetBestAgents() {
-        for (double[] bestAgent : bestAgents) {
-            bestAgent[0] = -1;
-            bestAgent[1] = Double.POSITIVE_INFINITY;
-        }
-    }
-
     private void checkFOLimits(double fo) {
         if (fo < m) {
             m = fo;
@@ -175,14 +161,6 @@ public class Society {
                 move();
             }
         } while (!Utils.stopCriteriaReached && Utils.bestFO > Utils.GOAL_VALUE);
-        for (int x = 0; x < totalAgents; x++) {
-            if (agents[x].getBestFO() < agents[x].getBestFOEver()) {
-                agents[x].setBestFOEver(agents[x].getBestFO());
-                for (int y = 0; y < agents[0].getTotalDim(); y++) {
-                    agents[x].getBestCoordsEver()[y] = agents[x].getBestCoords()[y];
-                }
-            }
-        }
         generateReport();
     }
 
@@ -210,7 +188,6 @@ public class Society {
     public void move() {
         for (Agent agent : agents) {
             agent.move(boundaries);
-            agent.setInfluencer(0);
         }
     }
 

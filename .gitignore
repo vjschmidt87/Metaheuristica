@@ -3,3 +3,4 @@ results/
 .project
 .classpath
 .settings/
+/nbproject/

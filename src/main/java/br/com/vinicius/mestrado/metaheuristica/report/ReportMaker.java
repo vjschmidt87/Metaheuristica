@@ -40,10 +40,10 @@ public class ReportMaker {
         data.append("Best Fo").append(";\n");
         for (Agent agent : agents) {
             data.append(agent.getId()).append(";");
-            for (double coord : agent.getBestCoordsEver()) {
+            for (double coord : agent.getBestCoords()) {
                     data.append(coord).append(";");
             }
-            data.append(agent.getBestFOEver()).append(";\n");
+            data.append(agent.getBestFO()).append(";\n");
         }
     }
     

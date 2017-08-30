@@ -28,42 +28,32 @@ public class Functions {
     }
     
     public static double invoker (String key, double[] coords) {
-        double value = 0;
         try {
             switch (key.toLowerCase()) {
                 case "rosenbrock":
-                    value = (double) methodMap.get("rosenbrock").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("rosenbrock").invoke(null, coords);
                 case "rastrigin":
-                    value = (double) methodMap.get("rastrigin").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("rastrigin").invoke(null, coords);
                 case "easom2d":
-                    value = (double) methodMap.get("easom2D").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("easom2D").invoke(null, coords);
                 case "easom":
-                    value = (double) methodMap.get("easom").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("easom").invoke(null, coords);
                 case "soundwave":
-                    value = (double) methodMap.get("soundWave").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("soundWave").invoke(null, coords);
                 case "potentiallj":
-                    value = (double) methodMap.get("potentialLJ").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("potentialLJ").invoke(null, coords);
                 case "sphere":
-                    value = (double) methodMap.get("sphere").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("sphere").invoke(null, coords);
                 case "spherepi":
-                    value = (double) methodMap.get("spherePI").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("spherePI").invoke(null, coords);
                 case "elliptic":
-                    value = (double) methodMap.get("elliptic").invoke(null, coords);
-                    break;
+                    return (double) methodMap.get("elliptic").invoke(null, coords);
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             System.err.println("Erro ao chamar a função " + key + ": " + ex.getMessage());
             System.exit(1);
         }
-        return value;
+        return Double.MAX_VALUE;
     }
     
     public static double rosenbrock(double[] coords) {
